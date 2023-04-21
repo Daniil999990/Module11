@@ -1,28 +1,23 @@
 package Numbers;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.stream.Stream;
 
 public class NumbersAndSorting {
     public static void main(String[] args) {
         String[] arr = {"1, 2, 0", "4, 5"};
-        List<Integer> numbers = new ArrayList<>();
-        for (String s : arr) {
-            String[] split = s.split(", ");
-            for (String num : split) {
-                numbers.add(Integer.parseInt(num));
-            }
+        Stream<Integer> numbers = Stream.of(arr)
+                .flatMap(s -> Stream.of(s.split(", ")))
+                .map(Integer::parseInt)
+                .sorted();
+        StringBuilder sorting = new StringBuilder();
+        numbers.forEach(num -> {
+            sorting.append(num);
+            sorting.append(", ");
+        });
+        if (sorting.length() > 2) {
+            sorting.setLength(sorting.length() - 2);
         }
-        Collections.sort(numbers);
-        StringBuilder Sorting = new StringBuilder();
-        for (int i = 0; i < numbers.size(); i++) {
-            Sorting.append(numbers.get(i));
-            if (i < numbers.size() - 1) {
-                Sorting.append(", ");
-            }
-        }
-        // виведе  0, 1, 2, 4, 5.
-        System.out.println(Sorting);
+        // виведе 0, 1, 2, 4, 5
+        System.out.println(sorting);
     }
 }
